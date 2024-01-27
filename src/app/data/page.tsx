@@ -75,9 +75,8 @@ function Data() {
     setName("");
     reset();
     setTable(!table);
-    // setSharedState([]);
-    // setTasks([]);
-  };
+    setSharedState({ itemList: [] });
+    setTasks({ itemList: [] });  };
   // const setData = async () => {
   //   dispatch(dataSet("UsernameSet"));
   //   setTable(!table)
