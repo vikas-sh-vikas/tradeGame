@@ -6,10 +6,13 @@ import { useAppSelector } from './redux/store';
 import { dataSet } from "./redux/features/slice";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import router  from "next/router";
+import { Task, getSharedState, setSharedState } from '@/app/redux/shared';
 
 function Home() {
   const username = useAppSelector((state) => state.dataReducer.value);
   const [table, setTable] = useState(false);
+  const [tasks, setTasks] = useState<Task>(getSharedState());
+
   // const router = useRouter();
   const [options, setOptions] = useState([
     {
@@ -38,13 +41,20 @@ function Home() {
     },
   ]);
   useEffect(() => {
-    // console.log("object")
-    console.log("Redux Data",username)
-  }, [table]);
+    const handleStorageChange = () => {
+      setTasks(getSharedState());
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
   // const setData = async () => {
-  //   // dispatch(dataSet("UsernameSet"));
   //   setTable(!table)
   // };
+  console.log("taskArray",tasks)
   return (
     <div>
             {/* <button
@@ -59,7 +69,7 @@ function Home() {
         customer
       </h1>
       <div className="flex justify-around">
-        {options.map((key) => (
+        {tasks.itemList?.map((key) => (
           <div>
             <h1 className="text-white title-font sm:text-2xl text-xl font-medium p-2">
               {key.name}

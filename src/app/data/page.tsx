@@ -7,6 +7,8 @@ import Link from "next/link";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useAppSelector } from "../redux/store";
+import { Task, getSharedState, setSharedState } from '@/app/redux/shared';
+
 // import router  from "next/router";
 type CustomerModel = {
   itemList?: {
@@ -22,6 +24,7 @@ function Data() {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [table, setTable] = useState(false);
+  const [tasks, setTasks] = useState<Task>(getSharedState());
   const username = useAppSelector((state) => state.dataReducer.value);
   const defaultValues: CustomerModel = {
     itemList: [
@@ -34,8 +37,16 @@ function Data() {
     ],
   };
   useEffect(() => {
-    console.log("use Effect");
-    console.log("Redux Data",username)
+    // setSharedState(formValues);
+
+    const handleStorageChange = () => {
+      setTasks(getSharedState());
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, [table]);
   const [formData, setFormData] = useState<CustomerModel>(defaultValues);
   const {
@@ -64,6 +75,8 @@ function Data() {
     setName("");
     reset();
     setTable(!table);
+    // setSharedState([]);
+    // setTasks([]);
   };
   // const setData = async () => {
   //   dispatch(dataSet("UsernameSet"));
@@ -71,22 +84,29 @@ function Data() {
   //   // router.push("/")
 
   // };
+  const addTask = () => {
+    // const newTasks: Task = 
+    //   {
+    //     itemList: [
+    //       { name: "", trade: "", rate: 0, actualRate: 100 },
+    //       { name: "", trade: "", rate: 0, actualRate: 100 },
+    //       { name: "", trade: "", rate: 0, actualRate: 100 },
+    //     ],
+    //   }
+    
+    // console.log("Updated Task",newTasks)
 
+    setSharedState(formValues);
+  };
   // console.log("Redux Home component", name);
   console.log("Redux Home component", formValues);
   return (
     <div className="bg-white h-screen">
-      {/* <button
-        type="button"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        onClick={() => setData()}
-      >
-        Set Data
-      </button>
-      <Link href="/">Click to route</Link> */}
+
       <h1 className="bg-white flex justify-around text-blck title-font sm:text-2xl text-xl font-medium p-2 mb-3">
         Customer Detail & Data
       </h1>
+      {/* <button onClick={addTask}>Add Task</button> */}
       <div className="relative overflow-x-auto">
         {/* <div className="flex flex-col justify-around align-center">
           <div style={{ width: "30vw" }}>
@@ -160,6 +180,7 @@ function Data() {
           {/* <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button> */}
         </form>
         {table && (
+          <>
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -277,6 +298,16 @@ function Data() {
               ))}
             </tbody>
           </table>
+          <button
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={addTask}
+            >
+              Set Data
+            </button>
+          {/* <button onClick={addTask}>Add Task</button> */}
+          </>
+
         )}
       </div>
     </div>
