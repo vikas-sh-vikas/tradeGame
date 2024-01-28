@@ -256,7 +256,7 @@ function Data() {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id="grid-first-name"
-                      type="text"
+                      type="number"
                       // disabled={true}
                       placeholder="Rate"
                       // {...register(`itemList.${index}.unitPrice`)}
@@ -276,7 +276,7 @@ function Data() {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id="grid-first-name"
-                      type="text"
+                      type="number"
                       placeholder="Actual Rate"
                       // {...register(`itemList.${index}.discount`)}
                       onChange={(e) => {
@@ -287,6 +287,7 @@ function Data() {
                             shouldValidate: true,
                           }
                         );
+                        addTask()
                       }}
                     />
                   </td>

@@ -3,8 +3,8 @@ export interface Task {
     itemList?: {
         name?: string;
         trade?: string;
-        rate?: number;
-        actualRate?: number;
+        rate?: any;
+        actualRate?: any;
       }[];
   }
 

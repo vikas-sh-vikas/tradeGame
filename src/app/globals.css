@@ -17,11 +17,17 @@
 }
 
 body {
-  background: black
+  background: white
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+.homeData{
+  background-color: #0c4a6e;
+  height: 100vh;
+  background-image: url("/public/image.jpg");
+  
 }
